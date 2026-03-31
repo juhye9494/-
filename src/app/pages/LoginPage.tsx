@@ -127,9 +127,9 @@ export function LoginPage() {
 
         {/* Info */}
         <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
-          <p className="text-xs text-gray-600 leading-relaxed">
-            <strong className="text-gray-900">안내:</strong> 등록된 @hankyung.com 이메일로 로그인하세요.
-            도의 비밀번호 없이 이메일만으로 로그인할 수 있습니다.
+          <p className="text-xs text-gray-600 leading-relaxed text-center">
+            <strong className="text-gray-900">안내:</strong> 사내 이메일(예: hankyung.com)을 입력하세요.
+            <br />별도의 비밀번호 없이 이메일만으로 로그인할 수 있습니다.
           </p>
         </div>
 

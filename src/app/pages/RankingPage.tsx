@@ -106,11 +106,16 @@ export function RankingPage() {
     }
 
     try {
-      // Try to get rank by ID
-      const { rank } = await getEmployeeRank(searchQuery);
-      const employee = employees.find(emp => emp.id === searchQuery);
+      // 1. 전체 목록(employees)에서 ID 또는 이메일이 일치하는 직원 찾기
+      const employee = employees.find(
+        (emp) => 
+          emp.id === searchQuery.trim() || 
+          emp.email === searchQuery.trim()
+      );
       
       if (employee) {
+        // 2. 해당 직원의 ID로 순위 정보 가져오기
+        const { rank } = await getEmployeeRank(employee.id);
         setSearchResult({
           rank,
           name: employee.name,
@@ -118,7 +123,7 @@ export function RankingPage() {
           email: employee.email,
         });
       } else {
-        toast.error("해당 직원을 찾을 수 없습니다");
+        toast.error("해당 직원을 찾을 수 없습니다. (ID 또는 이메일을 확인해주세요)");
       }
     } catch (error: any) {
       console.error("Search error:", error);
@@ -251,7 +256,7 @@ export function RankingPage() {
                   
                   <div className="flex gap-2">
                     <Input
-                      placeholder="사원 ID (예: emp_kimms)"
+                      placeholder="사원 ID 또는 이메일"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
