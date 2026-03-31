@@ -98,7 +98,8 @@ export async function subscribe(employeeId: string, naverId: string): Promise<{ 
 
 // 네이버 로그인 인증 URL 생성 (프론트엔드용)
 export function getNaverAuthUrl(employeeId: string) {
-  const redirectUri = encodeURIComponent(window.location.origin + '/'); // 무조건 홈페이지로 콜백
+  // 현재 접속한 도메인(origin)을 그대로 사용합니다. (예: https://hankyungbizcampaign.vercel.app)
+  const redirectUri = encodeURIComponent(window.location.origin); 
   const state = encodeURIComponent(employeeId); // 직원 ID를 state에 담아 보냄
   return `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${redirectUri}&state=${state}`;
 }

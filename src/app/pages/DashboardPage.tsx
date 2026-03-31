@@ -112,31 +112,6 @@ export function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-600 via-blue-500 to-blue-400 relative overflow-hidden">
-      {/* Decorative triangles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(15)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -20, 0],
-              opacity: [0.1, 0.3, 0.1],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-          >
-            <div className="w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[25px] border-b-white/20" />
-          </motion.div>
-        ))}
-      </div>
-
       {/* Header with Logout */}
       <div className="absolute top-4 right-4 z-20 flex gap-2">
         <Button
@@ -157,16 +132,6 @@ export function DashboardPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          {/* Triangle Logo */}
-          <div className="flex justify-center mb-4">
-            <div className="relative">
-              <div className="w-0 h-0 border-l-[50px] border-l-transparent border-r-[50px] border-r-transparent border-b-[80px] border-b-white" />
-              <div className="absolute top-2 left-1/2 -translate-x-1/2 text-blue-600 font-bold text-xs whitespace-nowrap">
-                HANKYUNG
-              </div>
-              <div className="absolute top-6 left-1/2 -translate-x-1/2 w-[60px] h-[2px] bg-blue-600" />
-            </div>
-          </div>
           <h1 className="text-3xl font-bold text-white">개인실적 조회하기</h1>
         </motion.div>
 
@@ -195,7 +160,7 @@ export function DashboardPage() {
           </div>
 
           {/* Link Section */}
-          <div className="mb-8">
+          <div className="mb-8 border-b border-gray-100 pb-8">
             <div className="mb-3">
               <span className="text-base font-bold text-green-600">{employee.name}님의 고유추천링크 :</span>
             </div>
@@ -214,75 +179,17 @@ export function DashboardPage() {
           </div>
 
           {/* Stats Section */}
-          <div className="border-t border-gray-200 pt-6 mb-8">
-            <div className="space-y-3">
-              <div className="flex justify-between items-center py-3 border-b border-gray-100">
-                <span className="text-base text-gray-700">2026년 실적</span>
-                <span className="text-xl font-bold text-blue-600">{count}명</span>
+          <div className="mb-10">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-blue-50 rounded-xl p-6 text-center border border-blue-100">
+                <div className="text-sm text-gray-600 mb-1 font-medium">현재 실적</div>
+                <div className="text-3xl font-bold text-blue-600">{count}명</div>
               </div>
-              <div className="flex justify-between items-center py-3 border-b border-gray-100">
-                <span className="text-base text-gray-700">2026년 실적(순위 반영)</span>
-                <span className="text-xl font-bold text-blue-600">{validCount}명</span>
-              </div>
-              <div className="flex justify-between items-center py-3">
-                <span className="text-base text-gray-700">현재 순위</span>
-                <span className="text-2xl font-bold text-blue-600">{rank}위</span>
+              <div className="bg-blue-50 rounded-xl p-6 text-center border border-blue-100">
+                <div className="text-sm text-gray-600 mb-1 font-medium">현재 순위</div>
+                <div className="text-3xl font-bold text-blue-600">{rank}위</div>
               </div>
             </div>
-          </div>
-
-          {/* Subscription List */}
-          <div className="mb-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">가입인증 리스트</h3>
-            
-            {/* Notice */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-              <ul className="space-y-1 text-xs text-gray-700">
-                <li>* 가입정보보호법에 따라 이메일주소 일부만 확인할 수 있습니다.</li>
-                <li>* 회원가입 후 탈퇴시 재등록됩니다.</li>
-                <li>* 본회측 도메인 사용되지 않는 도메인 등 검사작업 판단될 수 있는 계정이 최종가입한 경우, 이탈경우로 문의하여 실적제외 인정하지 않습니다.</li>
-              </ul>
-            </div>
-
-            {/* Table */}
-            {mockSubscriptions.length > 0 ? (
-              <div className="overflow-x-auto border border-gray-200 rounded-lg">
-                <table className="w-full text-sm">
-                  <thead className="bg-gray-100 border-b border-gray-200">
-                    <tr>
-                      <th className="py-3 px-4 text-center font-semibold text-gray-700">번호</th>
-                      <th className="py-3 px-4 text-center font-semibold text-gray-700">가입인증<br/>날짜 시간</th>
-                      <th className="py-3 px-4 text-center font-semibold text-gray-700">이메일</th>
-                      <th className="py-3 px-4 text-center font-semibold text-gray-700">탈퇴여부</th>
-                      <th className="py-3 px-4 text-center font-semibold text-gray-700">실적제외</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {mockSubscriptions.map((sub) => (
-                      <tr key={sub.no} className="border-b border-gray-100 hover:bg-gray-50">
-                        <td className="py-3 px-4 text-center text-gray-700">{sub.no}</td>
-                        <td className="py-3 px-4 text-center text-gray-700">{sub.date}</td>
-                        <td className="py-3 px-4 text-center text-gray-700">{sub.email}</td>
-                        <td className="py-3 px-4 text-center">
-                          <span className={`${sub.withdrawn ? 'text-red-600' : 'text-gray-700'}`}>
-                            {sub.withdrawn ? '탈퇴' : '-'}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 text-center">
-                          <span className={`${sub.excluded ? 'text-red-600 font-semibold' : 'text-gray-700'}`}>
-                            {sub.excluded ? '제외' : '-'}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <div className="text-center py-8 text-gray-500 border border-gray-200 rounded-lg bg-gray-50">
-                아직 가입 인증 내역이 없습니다
-              </div>
-            )}
           </div>
 
           {/* Action Button */}
