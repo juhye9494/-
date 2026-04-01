@@ -28,8 +28,16 @@ export function RankingPage() {
     email?: string;
   } | null>(null);
   const [loggedInEmployee, setLoggedInEmployee] = useState<any>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    
     // Check if user is logged in
     const stored = localStorage.getItem("employee");
     if (stored) {
@@ -47,6 +55,8 @@ export function RankingPage() {
     if (code && state) {
       handleNaverCallback(code, state);
     }
+
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const handleNaverCallback = async (code: string, employeeId: string) => {
@@ -192,14 +202,35 @@ export function RankingPage() {
   }
 
   // 피라미드 구조를 위한 줄별 배열 생성
-  const pyramidRows = [
-    employees.slice(0, 1),   // 1위
-    employees.slice(1, 3),   // 2-3위
-    employees.slice(3, 6),   // 4-6위
-    employees.slice(6, 10),  // 7-10위
-    employees.slice(10, 15), // 11-15위
-    employees.slice(15, 20), // 16-20위
-  ];
+  const getPyramidRows = () => {
+    if (employees.length === 0) return [];
+    
+    if (isMobile) {
+      // 모바일: 1위(1), 2-3위(2), 이후 줄당 3명씩
+      const rows = [];
+      rows.push(employees.slice(0, 1));
+      if (employees.length > 1) rows.push(employees.slice(1, 3));
+      
+      let current = 3;
+      while (current < employees.length) {
+        rows.push(employees.slice(current, Math.min(current + 3, employees.length)));
+        current += 3;
+      }
+      return rows;
+    } else {
+      // 데스크탑: 기존 피라미드 (1, 2, 3, 4, 5, 5)
+      return [
+        employees.slice(0, 1),
+        employees.slice(1, 3),
+        employees.slice(3, 6),
+        employees.slice(6, 10),
+        employees.slice(10, 15),
+        employees.slice(15, 20),
+      ];
+    }
+  };
+
+  const pyramidRows = getPyramidRows();
 
   const getRankStyle = (rank: number) => {
     if (rank === 1) return "bg-gradient-to-br from-yellow-400 to-yellow-600 text-white border-yellow-500 shadow-lg shadow-yellow-500/50";
@@ -209,7 +240,7 @@ export function RankingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-blue-500 to-blue-400">
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-blue-500 to-blue-400 bg-fixed overflow-x-hidden">
       {/* Header */}
       <header className="bg-white/10 backdrop-blur-md border-b border-white/20">
         <div className="container mx-auto px-4 py-4">
@@ -303,7 +334,7 @@ export function RankingPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: rowIndex * 0.1 }}
-                className="flex justify-center gap-3"
+                className="flex justify-center gap-1 sm:gap-3"
               >
                 {row.map((employee, index) => {
                   const rank = startRank + index;
@@ -356,9 +387,9 @@ export function RankingPage() {
                       )}
                       
                       <div
-                        className={`w-28 h-28 rounded-lg border-2 ${getRankStyle(rank)} ${
+                        className={`w-24 h-24 sm:w-28 sm:h-28 rounded-lg border-2 ${getRankStyle(rank)} ${
                           isTopThree ? 'border-3 shadow-2xl' : 'shadow-sm hover:shadow-md'
-                        } transition-all duration-200 flex flex-col items-center justify-center p-3 relative z-10`}
+                        } transition-all duration-200 flex flex-col items-center justify-center p-2 sm:p-3 relative z-10`}
                       >
                         {/* Sparkle effects for 1st place */}
                         {rank === 1 && (
@@ -397,7 +428,7 @@ export function RankingPage() {
 
                         {/* Rank Badge */}
                         <motion.div 
-                          className={`absolute -top-2 -left-2 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shadow-md ${
+                          className={`absolute -top-1 -left-1 sm:-top-2 sm:-left-2 w-5 h-5 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold shadow-md ${
                             rank === 1 ? 'bg-gradient-to-br from-yellow-300 to-yellow-500 text-white' :
                             rank === 2 ? 'bg-blue-600 text-white' :
                             rank === 3 ? 'bg-blue-600 text-white' :
@@ -466,14 +497,14 @@ export function RankingPage() {
                         )}
 
                         {/* Name */}
-                        <div className={`text-sm font-bold text-center mb-1 ${
+                        <div className={`text-[10px] sm:text-sm font-bold text-center mb-0.5 sm:mb-1 ${
                           rank === 1 ? 'text-white drop-shadow-md' : 'text-gray-900'
                         }`}>
                           {employee.name}
                         </div>
 
                         {/* Subscriber Count */}
-                        <div className={`text-xs font-semibold ${
+                        <div className={`text-[8px] sm:text-xs font-semibold ${
                           rank === 1 ? 'text-white/90' : 'text-gray-600'
                         }`}>
                           {employee.subscriberCount}명 참여

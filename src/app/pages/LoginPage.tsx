@@ -66,7 +66,7 @@ export function LoginPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-lg shadow-sm p-8 max-w-md w-full border border-gray-200"
+        className="bg-white rounded-lg shadow-sm p-6 sm:p-8 max-w-md w-full border border-gray-200"
       >
         {/* Logo/Header */}
         <div className="text-center mb-8">

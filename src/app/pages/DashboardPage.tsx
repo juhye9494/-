@@ -123,7 +123,7 @@ export function DashboardPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white rounded-lg shadow-2xl p-8 relative"
+          className="bg-white rounded-lg shadow-2xl p-6 sm:p-8 relative"
         >
           {/* Date */}
           <div className="text-right text-sm text-gray-500 mb-6">
@@ -163,14 +163,14 @@ export function DashboardPage() {
 
           {/* Stats Section */}
           <div className="mb-10">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-blue-50 rounded-xl p-6 text-center border border-blue-100">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="bg-blue-50 rounded-xl p-4 sm:p-6 text-center border border-blue-100">
                 <div className="text-sm text-gray-600 mb-1 font-medium">현재 실적</div>
-                <div className="text-3xl font-bold text-blue-600">{count}명</div>
+                <div className="text-2xl sm:text-3xl font-bold text-blue-600">{count}명</div>
               </div>
-              <div className="bg-blue-50 rounded-xl p-6 text-center border border-blue-100">
+              <div className="bg-blue-50 rounded-xl p-4 sm:p-6 text-center border border-blue-100">
                 <div className="text-sm text-gray-600 mb-1 font-medium">현재 순위</div>
-                <div className="text-3xl font-bold text-blue-600">{rank}위</div>
+                <div className="text-2xl sm:text-3xl font-bold text-blue-600">{rank}위</div>
               </div>
             </div>
           </div>
