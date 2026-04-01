@@ -541,14 +541,17 @@ export function RankingPage() {
 
           {/* Info Box */}
           <div className="bg-white/95 backdrop-blur rounded-lg p-5 border border-white/20 shadow-lg">
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
                 <Trophy className="w-4 h-4 text-blue-600" />
                 이벤트 안내
               </h3>
-              <span className="text-[11px] font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
-                4/6(월) ~ 5/6(수) 자정
-              </span>
+            </div>
+            
+            {/* 강조된 이벤트 기간 배너 */}
+            <div className="mb-6 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-xl p-4 text-center shadow-md border border-blue-400/30">
+              <p className="text-[10px] uppercase tracking-wider opacity-80 mb-1 font-bold">Event Period</p>
+              <p className="text-xl font-black">2026. 4. 6(월) ~ 5. 6(수) 자정</p>
             </div>
             <div className="text-sm text-gray-700 leading-relaxed space-y-4">
               <p>
