@@ -83,7 +83,7 @@ export function LoginPage() {
             직원 로그인
           </h1>
           <p className="text-sm text-gray-600">
-            한국경제신문 구독 경쟁 이벤트
+            한경비즈니스 구독 경쟁 이벤트
           </p>
         </div>
 

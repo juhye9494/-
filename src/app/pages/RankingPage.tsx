@@ -535,7 +535,7 @@ export function RankingPage() {
               🔗 내 링크 생성하기
             </Button>
             <p className="text-sm text-white/90 mt-3">
-              한국경제신문 직원이신가요? 로그인하여 나만의 추천 링크를 받으세요!
+              한경비즈니스 직원이신가요? 로그인하여 나만의 추천 링크를 받으세요!
             </p>
           </div>
 

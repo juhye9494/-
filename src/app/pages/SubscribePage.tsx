@@ -71,7 +71,7 @@ export function SubscribePage() {
   const handleGoToNaver = () => {
     // Redirect to Hankyung Naver press subscription page ranking list (Immediate redirect in current window)
     window.location.href = "https://media.naver.com/press/050/ranking";
-    toast.success("한국경제신문 구독 페이지로 이동합니다");
+    toast.success("한경비즈니스 구독 페이지로 이동합니다");
   };
 
   const handleShare = () => {
@@ -180,24 +180,13 @@ export function SubscribePage() {
       >
         {!authenticated ? (
           <>
-            {/* Logo */}
-            <div className="flex justify-center mb-6">
-              <div className="relative">
-                <div className="w-0 h-0 border-l-[40px] border-l-transparent border-r-[40px] border-r-transparent border-b-[65px] border-b-blue-600" />
-                <div className="absolute top-2 left-1/2 -translate-x-1/2 text-white font-bold text-[10px] whitespace-nowrap">
-                  HANKYUNG
-                </div>
-                <div className="absolute top-5 left-1/2 -translate-x-1/2 w-[50px] h-[2px] bg-white" />
-              </div>
-            </div>
-
             {/* Header */}
             <div className="text-center mb-6">
               <h1 className="text-2xl font-bold text-gray-900 mb-2">
                 {employee.name} 님을 응원해주세요!
               </h1>
               <p className="text-sm text-gray-600">
-                한국경제신문 구독 경쟁 이벤트
+                한경비즈니스 구독 경쟁 이벤트
               </p>
             </div>
 
@@ -221,21 +210,31 @@ export function SubscribePage() {
 
             {/* Info Box */}
             <div className="bg-green-50 rounded-lg p-4 mb-6 border border-green-200">
-              <h3 className="text-base font-bold text-gray-900 mb-3">
+              <h3 className="text-base font-bold text-gray-900 mb-3 text-center">
                 🎯 참여 방법
               </h3>
-              <ol className="space-y-2 text-sm text-gray-700">
+              <ol className="space-y-4 text-sm text-gray-700 mb-4">
                 <li className="flex items-start gap-2">
                   <span className="font-bold text-green-600 min-w-[20px]">1.</span>
-                  <span>아래 "네이버로 로그인" 버튼 클릭</span>
+                  <span>아래 "네이버로 로그인" 버튼을 눌러주세요</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="font-bold text-green-600 min-w-[20px]">2.</span>
-                  <span>네이버 계정으로 로그인한 뒤 <strong>한경비즈니스 온라인 구독 버튼 클릭</strong></span>
+                  <span>로그인 후 이동하는 페이지에서 <strong>[+구독] 버튼</strong>을 클릭하면 참여 완료!</span>
                 </li>
               </ol>
-              <div className="mt-3 pt-3 border-t border-green-200">
-                <p className="text-xs text-gray-600 italic">
+              
+              {/* Naver Guide Image */}
+              <div className="mb-4 rounded-lg overflow-hidden border border-yellow-300 shadow-md">
+                <img 
+                  src="/images/naver-guide.png" 
+                  alt="네이버 뉴스 구독 가이드" 
+                  className="w-full h-auto"
+                />
+              </div>
+
+              <div className="pt-3 border-t border-green-200">
+                <p className="text-xs text-center text-gray-600 italic">
                   ✓ 로그인이 완료되면 자동으로 구독 페이지로 이동합니다.
                 </p>
               </div>
@@ -323,7 +322,7 @@ export function SubscribePage() {
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-base font-semibold"
               >
                 <ExternalLink className="w-5 h-5 mr-2" />
-                한국경제신문 네이버 구독하기
+                한경비즈니스 네이버 구독하기
               </Button>
 
               <Button
