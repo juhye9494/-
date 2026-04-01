@@ -535,7 +535,7 @@ export function RankingPage() {
               🔗 내 링크 생성하기
             </Button>
             <p className="text-sm text-white/90 mt-3">
-              한경비즈니스 직원이신가요? 로그인하여 나만의 추천 링크를 받으세요!
+              한국경제매거진앤북 직원이신가요? 로그인하여 나만의 추천 링크를 받으세요!
             </p>
           </div>
 
@@ -545,10 +545,62 @@ export function RankingPage() {
               <Trophy className="w-4 h-4 text-blue-600" />
               이벤트 안내
             </h3>
-            <p className="text-sm text-gray-700 leading-relaxed">
-              직원 로그인 후 개인 링크를 받아 공유하세요.
-              해당 링크로 접속하여 네이버 로그인한 사용자 수만큼 순위가 올라갑니다!
-            </p>
+            <div className="text-sm text-gray-700 leading-relaxed space-y-4">
+              <p>
+                직원 로그인 후 개인 링크를 받아 공유하세요. 해당 링크로 접속하여 네이버 로그인, 한경 비즈니스 구독을 해주신 사용자 수만큼 순위가 올라갑니다!
+              </p>
+              
+              <div className="pt-3 border-t border-gray-100 space-y-1 font-medium">
+                <p className="flex justify-between"><span>1등: 100만원</span> <span className="text-gray-500 font-normal">/ 2,000명 이상</span></p>
+                <p className="flex justify-between"><span>2등: 50만원</span> <span className="text-gray-500 font-normal">/ 1,000명 이상</span></p>
+                <p className="flex justify-between"><span>3등: 30만원</span> <span className="text-gray-500 font-normal">/ 500명 이상</span></p>
+                <p className="flex justify-between"><span>4~5등: 각 10만원</span> <span className="text-gray-500 font-normal">/ 300명 이상</span></p>
+                <p className="flex justify-between"><span>6~10등: 각 5만원</span> <span className="text-gray-500 font-normal">/ 100명 이상</span></p>
+                <p className="flex justify-between"><span>참여보상: 커피쿠폰</span> <span className="text-gray-500 font-normal">/ 30명 이상</span></p>
+                <p className="text-[11px] text-gray-500 pt-1 font-normal">* 현금 보상은 백화점 상품권으로 지급됩니다.</p>
+              </div>
+
+              <div className="pt-3 border-t border-gray-100 space-y-3 text-[13px]">
+                <div>
+                  <h4 className="font-bold text-gray-900 mb-1 flex items-center gap-1">
+                    <span className="w-1 h-1 bg-blue-600 rounded-full"></span>
+                    순위 산정
+                  </h4>
+                  <ul className="list-disc list-inside text-gray-600 pl-1 space-y-0.5">
+                    <li>구독자 수 기준 내림차순 정렬</li>
+                    <li>공동 순위 없음 (1, 2, 3등 단일 부여)</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-gray-900 mb-1 flex items-center gap-1">
+                    <span className="w-1 h-1 bg-blue-600 rounded-full"></span>
+                    보상 지급 기준
+                  </h4>
+                  <p className="text-gray-600 pl-1 mb-1">각 순위별 최소 구독자 수 충족 시 지급 (미달 시 하위 보상 기준 적용)</p>
+                  <p className="text-[11px] bg-blue-50 text-blue-700 px-2 py-1 rounded">
+                    예) 1등 2,000명 미달 시, 1,000명 이상 달성하면 2등 보상 지급
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-1 flex items-center gap-1">
+                      <span className="w-1 h-1 bg-blue-600 rounded-full"></span>
+                      참여보상
+                    </h4>
+                    <p className="text-gray-600 pl-1">30명 이상 달성 시 지급 (순위 보상과 중복 가능)</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-1 flex items-center gap-1">
+                      <span className="w-1 h-1 bg-blue-600 rounded-full"></span>
+                      추가 인센티브
+                    </h4>
+                    <p className="text-gray-600 pl-1">추가 달성 시 별도 보상 (기존 보상과 중복 가능)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </motion.div>
 

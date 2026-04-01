@@ -187,7 +187,7 @@ export function SubscribePage() {
                 {employee.name} 님을 응원해주세요!
               </h1>
               <p className="text-sm text-gray-600">
-                한경비즈니스 구독 경쟁 이벤트
+                한국경제매거진앤북 구독 경쟁 이벤트
               </p>
             </div>
 
