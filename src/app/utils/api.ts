@@ -277,7 +277,7 @@ export async function getTextSettings(): Promise<TextSettings> {
   if (error || !data) {
     // 기본값 반환
     return {
-      eventTitle: "한국경제신문 구독 랭킹",
+      eventTitle: "한경비즈니스 구독 랭킹",
       eventDescription: "사원님의 힘을 보여주세요",
       dashboardWelcome: "환영합니다",
       loginPageTitle: "사원 로그인",

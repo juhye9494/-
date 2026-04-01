@@ -641,7 +641,7 @@ export function AdminPage() {
                       이벤트 설명
                     </label>
                     <Input
-                      placeholder="예: 한국경제신문 그룹 구독 확장 이벤트에 참여해주세요!"
+                      placeholder="예: 한경비즈니스 그룹 구독 확장 이벤트에 참여해주세요!"
                       value={textSettings.eventDescription}
                       onChange={(e) => setTextSettings({ ...textSettings, eventDescription: e.target.value })}
                       className="bg-white"
@@ -678,7 +678,7 @@ export function AdminPage() {
                       페이지 제목
                     </label>
                     <Input
-                      placeholder="예: 한국경제신문 구독 경쟁"
+                      placeholder="예: 한경비즈니스 구독 경쟁"
                       value={textSettings.loginPageTitle}
                       onChange={(e) => setTextSettings({ ...textSettings, loginPageTitle: e.target.value })}
                       className="bg-white"

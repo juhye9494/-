@@ -22,7 +22,7 @@ export function LoginPage() {
 
     // Check if email ends with @hankyung.com
     if (!email.endsWith("@hankyung.com")) {
-      toast.error("한국경제신문 이메일(@hankyung.com)로 로그인해주세요");
+      toast.error("한경비즈니스 이메일(@hankyung.com)로 로그인해주세요");
       return;
     }
 

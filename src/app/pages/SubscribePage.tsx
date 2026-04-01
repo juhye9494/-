@@ -6,6 +6,7 @@ import type { Employee } from "../utils/api";
 import { Button } from "../components/ui/button";
 import { motion } from "motion/react";
 import { toast } from "sonner";
+import { NAVER_GUIDE_BASE64 } from "../assets/GuideImage";
 
 export function SubscribePage() {
   const { employeeId } = useParams<{ employeeId: string }>();
@@ -227,7 +228,7 @@ export function SubscribePage() {
               {/* Naver Guide Image */}
               <div className="mb-4 rounded-lg overflow-hidden border border-yellow-300 shadow-md">
                 <img 
-                  src="/images/naver-guide.png" 
+                  src={NAVER_GUIDE_BASE64} 
                   alt="네이버 뉴스 구독 가이드" 
                   className="w-full h-auto"
                 />
