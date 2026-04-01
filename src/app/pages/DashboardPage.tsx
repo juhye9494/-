@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { LogOut, Copy, Trophy, Shield } from "lucide-react";
+import { LogOut, Copy, Trophy } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { motion } from "motion/react";
 import { toast } from "sonner";
@@ -13,15 +13,6 @@ interface EmployeeData {
   name: string;
 }
 
-// Mock subscription data - 실제로는 서버에서 가져와야 함
-interface Subscription {
-  no: number;
-  date: string;
-  email: string;
-  withdrawn: boolean;
-  excluded: boolean;
-}
-
 export function DashboardPage() {
   const navigate = useNavigate();
   const [employee, setEmployee] = useState<EmployeeData | null>(null);
@@ -30,13 +21,6 @@ export function DashboardPage() {
   const [myLink, setMyLink] = useState("");
   const [currentDate, setCurrentDate] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-
-  // Mock data for subscriptions
-  const mockSubscriptions: Subscription[] = [
-    { no: 1, date: "2026-03-25 14:23", email: "user1@naver.com", withdrawn: false, excluded: false },
-    { no: 2, date: "2026-03-26 09:15", email: "user2@gmail.com", withdrawn: false, excluded: false },
-    { no: 3, date: "2026-03-27 16:42", email: "user3@kakao.com", withdrawn: true, excluded: true },
-  ];
 
   useEffect(() => {
     // Check if user is logged in
@@ -108,7 +92,6 @@ export function DashboardPage() {
   }
 
   const count = employeeInfo?.subscriberCount || 0;
-  const validCount = mockSubscriptions.filter(s => !s.excluded).length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-600 via-blue-500 to-blue-400 relative overflow-hidden">

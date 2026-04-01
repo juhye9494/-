@@ -149,8 +149,8 @@ export async function initEmployees(employees: Array<any>): Promise<{ success: b
     email: emp.email,
     department: emp.department,
     company: emp.company,
-    position: emp.position,
-    subscriber_count: 0
+    position: emp.position
+    // subscriber_count를 제외하여 기존 데이터가 있을 경우 점수를 보존합니다.
   }));
 
   const { error } = await supabase
