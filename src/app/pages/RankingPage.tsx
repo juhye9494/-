@@ -556,7 +556,7 @@ export function RankingPage() {
                 <p className="flex justify-between"><span>3등: 30만원</span> <span className="text-gray-500 font-normal">/ 500명 이상</span></p>
                 <p className="flex justify-between"><span>4~5등: 각 10만원</span> <span className="text-gray-500 font-normal">/ 300명 이상</span></p>
                 <p className="flex justify-between"><span>6~10등: 각 5만원</span> <span className="text-gray-500 font-normal">/ 100명 이상</span></p>
-                <p className="flex justify-between"><span>참여보상: 커피쿠폰</span> <span className="text-gray-500 font-normal">/ 30명 이상</span></p>
+                <p className="flex justify-between"><span>참여보상: 스타벅스 아메리카노 2잔 쿠폰</span> <span className="text-gray-500 font-normal">/ 30명 이상</span></p>
                 <p className="text-[11px] text-gray-500 pt-1 font-normal">* 현금 보상은 백화점 상품권으로 지급됩니다.</p>
               </div>
 
