@@ -541,10 +541,15 @@ export function RankingPage() {
 
           {/* Info Box */}
           <div className="bg-white/95 backdrop-blur rounded-lg p-5 border border-white/20 shadow-lg">
-            <h3 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-              <Trophy className="w-4 h-4 text-blue-600" />
-              이벤트 안내
-            </h3>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                <Trophy className="w-4 h-4 text-blue-600" />
+                이벤트 안내
+              </h3>
+              <span className="text-[11px] font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+                4/6(월) ~ 5/6(수) 자정
+              </span>
+            </div>
             <div className="text-sm text-gray-700 leading-relaxed space-y-4">
               <p>
                 직원 로그인 후 개인 링크를 받아 공유하세요. 해당 링크로 접속하여 네이버 로그인, 한경 비즈니스 구독을 해주신 사용자 수만큼 순위가 올라갑니다!
@@ -567,7 +572,7 @@ export function RankingPage() {
                     순위 산정
                   </h4>
                   <ul className="list-disc list-inside text-gray-600 pl-1 space-y-0.5">
-                    <li>구독자 수 기준 내림차순 정렬</li>
+                    <li>&lt;구독자 확보 수 기준 순위 산정 (많이 확보한 순)&gt;</li>
                     <li>공동 순위 없음 (1, 2, 3등 단일 부여)</li>
                   </ul>
                 </div>
