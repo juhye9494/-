@@ -44,16 +44,17 @@ export function RankingPage() {
       setLoggedInEmployee(JSON.parse(stored));
     }
 
-    // Load rankings
-    loadRankings();
-
     // 네이버 로그인 콜백 확인
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
     const state = urlParams.get("state"); // state에 담긴 직원 ID
 
     if (code && state) {
+      // 콜백인 경우 인증 처리만 진행하고 랭킹 데이터는 로드하지 않음 (로딩 화면 유지)
       handleNaverCallback(code, state);
+    } else {
+      // 일반 접속인 경우에만 랭킹 로드
+      loadRankings();
     }
 
     return () => window.removeEventListener("resize", checkMobile);
