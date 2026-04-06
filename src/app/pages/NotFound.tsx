@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { Home, Search } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { motion } from "motion/react";

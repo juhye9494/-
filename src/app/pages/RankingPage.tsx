@@ -4,7 +4,7 @@ import { getRankings, getEmployeeRank, verifyNaverAndCount } from "../utils/api"
 import type { Employee } from "../utils/api";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -66,7 +66,7 @@ export function RankingPage() {
     // 보험(Fallback): 서버 응답이 너무 느려도 2.5초 뒤엔 무조건 네이버 뉴스로 보냅니다.
     const fallbackRedirect = setTimeout(() => {
       toast.dismiss(loadingToast);
-      window.location.href = "https://media.naver.com/press/050/ranking";
+      window.location.href = "https://media.naver.com/press/050";
     }, 2500);
 
     try {
@@ -76,13 +76,13 @@ export function RankingPage() {
       // 서버 응답이 2.5초보다 빠르면 위 타이머를 취소하고 즉시 이동
       clearTimeout(fallbackRedirect);
       toast.dismiss(loadingToast);
-      window.location.href = "https://media.naver.com/press/050/ranking";
+      window.location.href = "https://media.naver.com/press/050";
     } catch (error: any) {
       console.error("Home callback error:", error);
       // 에러가 나더라도 사용자는 뉴스 페이지로 보내줍니다. (데이터는 로그로 확인)
       clearTimeout(fallbackRedirect);
       toast.dismiss(loadingToast);
-      window.location.href = "https://media.naver.com/press/050/ranking";
+      window.location.href = "https://media.naver.com/press/050";
     }
   };
 

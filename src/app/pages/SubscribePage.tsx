@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate } from "react-router-dom";
 import { CheckCircle, XCircle, Share2, ArrowLeft, ExternalLink } from "lucide-react";
 import { getEmployeeById, getNaverAuthUrl, verifyNaverAndCount } from "../utils/api";
 import type { Employee } from "../utils/api";
@@ -71,7 +71,7 @@ export function SubscribePage() {
 
   const handleGoToNaver = () => {
     // Redirect to Hankyung Naver press subscription page ranking list (Immediate redirect in current window)
-    window.location.href = "https://media.naver.com/press/050/ranking";
+    window.location.href = "https://media.naver.com/press/050";
     toast.success("한경비즈니스 구독 페이지로 이동합니다");
   };
 
