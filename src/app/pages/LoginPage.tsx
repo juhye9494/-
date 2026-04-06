@@ -134,13 +134,7 @@ export function LoginPage() {
         </div>
 
         {/* Back Button */}
-        <Button
-          onClick={() => navigate("/")}
-          variant="ghost"
-          className="w-full mt-4 text-gray-600"
-        >
-          랭킹 페이지로 돌아가기
-        </Button>
+
 
         {/* Admin Link */}
         <div className="mt-4 text-center">

@@ -110,13 +110,7 @@ export function SubscribePage() {
           <p className="text-gray-600 mb-6 text-sm">
             유효하지 않은 링크입니다. 링크를 다시 확인해주세요.
           </p>
-          <Button
-            onClick={() => navigate("/")}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            랭킹 페이지로 이동
-          </Button>
+
         </motion.div>
       </div>
     );
@@ -135,13 +129,7 @@ export function SubscribePage() {
           <p className="text-gray-600 mb-6 text-sm">
             유효하지 않은 링크입니다. 링크를 다시 확인해주세요.
           </p>
-          <Button
-            onClick={() => navigate("/")}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            랭킹 페이지로 이동
-          </Button>
+
         </motion.div>
       </div>
     );
@@ -273,14 +261,7 @@ export function SubscribePage() {
                 친구에게 링크 공유하기
               </Button>
 
-              <Button
-                onClick={() => navigate("/")}
-                variant="ghost"
-                className="w-full text-gray-600 hover:text-gray-900 py-5"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                실시간 랭킹 보기
-              </Button>
+
             </div>
           </>
         ) : (
@@ -326,14 +307,7 @@ export function SubscribePage() {
                 한경비즈니스 네이버 구독하기
               </Button>
 
-              <Button
-                onClick={() => navigate("/")}
-                variant="outline"
-                className="w-full py-5 border-2 border-blue-600 text-blue-600 hover:bg-blue-50"
-              >
-                <ArrowLeft className="w-5 h-5 mr-2" />
-                실시간 랭킹 확인하기
-              </Button>
+
 
               <Button
                 onClick={handleShare}
