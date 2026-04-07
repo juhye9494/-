@@ -65,6 +65,8 @@ export function AdminPage() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [filteredSubscriptions, setFilteredSubscriptions] = useState<Subscription[]>([]);
   const [subscriptionSearchQuery, setSubscriptionSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 100;
 
   useEffect(() => {
     // Check if admin is authenticated
@@ -158,8 +160,15 @@ export function AdminPage() {
         sub.employeeDepartment?.toLowerCase().includes(query)
       );
       setFilteredSubscriptions(filtered);
+      setCurrentPage(1); // Reset to first page on search
     }
   }, [subscriptionSearchQuery, subscriptions]);
+
+  const totalPages = Math.ceil(filteredSubscriptions.length / ITEMS_PER_PAGE);
+  const paginatedData = filteredSubscriptions.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   // When company filter changes, reset department filter
   useEffect(() => {
@@ -929,7 +938,7 @@ export function AdminPage() {
                           </TableCell>
                         </TableRow>
                       ) : (
-                        filteredSubscriptions.map((sub) => (
+                        paginatedData.map((sub) => (
                           <TableRow key={sub.id} className="hover:bg-gray-50">
                             <TableCell className="text-gray-500 text-sm">
                               {new Date(sub.createdAt).toLocaleString('ko-KR', {
@@ -966,6 +975,54 @@ export function AdminPage() {
                   </Table>
                 </div>
               </div>
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between px-2 py-4">
+                  <div className="text-sm text-gray-500">
+                    전체 {filteredSubscriptions.length}개 중 {Math.min((currentPage - 1) * ITEMS_PER_PAGE + 1, filteredSubscriptions.length)}-{Math.min(currentPage * ITEMS_PER_PAGE, filteredSubscriptions.length)} 표시
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                      disabled={currentPage === 1}
+                    >
+                      이전
+                    </Button>
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                        let pageNum;
+                        if (totalPages <= 5) pageNum = i + 1;
+                        else if (currentPage <= 3) pageNum = i + 1;
+                        else if (currentPage >= totalPages - 2) pageNum = totalPages - 4 + i;
+                        else pageNum = currentPage - 2 + i;
+                        
+                        return (
+                          <Button
+                            key={pageNum}
+                            variant={currentPage === pageNum ? "default" : "outline"}
+                            size="sm"
+                            className="w-9 h-9 p-0"
+                            onClick={() => setCurrentPage(pageNum)}
+                          >
+                            {pageNum}
+                          </Button>
+                        );
+                      })}
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                      disabled={currentPage === totalPages}
+                    >
+                      다음
+                    </Button>
+                  </div>
+                </div>
+              )}
             </TabsContent>
           </Tabs>
         </motion.div>
