@@ -183,6 +183,34 @@ export async function getAllEmployees(): Promise<Employee[]> {
   return data.map(mapEmployee);
 }
 
+/**
+ * ID 또는 이메일로 직원을 검색합니다. (이메일은 대소문자 구분 없음)
+ */
+export async function findEmployee(query: string): Promise<Employee | null> {
+  const trimmedQuery = query.trim();
+  
+  // UUID 형식인지 확인 (ID 검색을 위해)
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(trimmedQuery);
+
+  let filter = `email.ilike.${trimmedQuery}`;
+  if (isUuid) {
+    filter += `,id.eq.${trimmedQuery}`;
+  }
+
+  const { data, error } = await supabase
+    .from('employees')
+    .select('*')
+    .or(filter)
+    .maybeSingle();
+
+  if (error || !data) {
+    console.error("Find employee error:", error);
+    return null;
+  }
+  
+  return mapEmployee(data);
+}
+
 export async function getSubscriptions(): Promise<Subscription[]> {
   const { data, error } = await supabase
     .from('subscriptions')

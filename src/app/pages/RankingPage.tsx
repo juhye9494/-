@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Trophy, Crown, Search, User } from "lucide-react";
-import { getRankings, getEmployeeRank, verifyNaverAndCount } from "../utils/api";
+import { getRankings, getEmployeeRank, verifyNaverAndCount, findEmployee } from "../utils/api";
 import type { Employee } from "../utils/api";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -117,12 +117,8 @@ export function RankingPage() {
     }
 
     try {
-      // 1. 전체 목록(employees)에서 ID 또는 이메일이 일치하는 직원 찾기
-      const employee = employees.find(
-        (emp) => 
-          emp.id === searchQuery.trim() || 
-          emp.email === searchQuery.trim()
-      );
+      // 1. DB에서 직접 ID 또는 이메일로 직원 찾기 (상위 20명 외에도 검색 가능)
+      const employee = await findEmployee(searchQuery.trim());
       
       if (employee) {
         // 2. 해당 직원의 ID로 순위 정보 가져오기
