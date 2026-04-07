@@ -21,6 +21,17 @@ export interface Employee {
   subscriberCount: number;
 }
 
+export interface Subscription {
+  id: string;
+  employeeId: string;
+  naverId: string;
+  naverName: string | null;
+  createdAt: string;
+  employeeName?: string;
+  employeeCompany?: string;
+  employeeDepartment?: string;
+}
+
 const mapEmployee = (row: any): Employee => ({
   id: row.id,
   name: row.name,
@@ -170,6 +181,36 @@ export async function getAllEmployees(): Promise<Employee[]> {
 
   if (error) return [];
   return data.map(mapEmployee);
+}
+
+export async function getSubscriptions(): Promise<Subscription[]> {
+  const { data, error } = await supabase
+    .from('subscriptions')
+    .select(`
+      *,
+      employees (
+        name,
+        company,
+        department
+      )
+    `)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error("Error fetching subscriptions:", error);
+    return [];
+  }
+
+  return data.map((row: any) => ({
+    id: row.id,
+    employeeId: row.employee_id,
+    naverId: row.naver_id,
+    naverName: row.naver_name,
+    createdAt: row.created_at,
+    employeeName: row.employees?.name,
+    employeeCompany: row.employees?.company,
+    employeeDepartment: row.employees?.department,
+  }));
 }
 
 export interface DepartmentStatistics {

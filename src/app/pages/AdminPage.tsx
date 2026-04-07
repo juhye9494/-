@@ -10,7 +10,8 @@ import {
   Download,
   Filter,
   FileText,
-  Save
+  Save,
+  List
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -33,8 +34,8 @@ import {
   TableRow,
 } from "../components/ui/table";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
-import { getAllEmployees, getDepartmentStatistics, getTextSettings, updateTextSettings } from "../utils/api";
-import type { Employee, DepartmentStatistics, TextSettings } from "../utils/api";
+import { getAllEmployees, getDepartmentStatistics, getTextSettings, updateTextSettings, getSubscriptions } from "../utils/api";
+import type { Employee, DepartmentStatistics, TextSettings, Subscription } from "../utils/api";
 
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'];
 
@@ -61,6 +62,9 @@ export function AdminPage() {
     alreadySubscribedMessage: "",
   });
   const [isSavingText, setIsSavingText] = useState(false);
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [filteredSubscriptions, setFilteredSubscriptions] = useState<Subscription[]>([]);
+  const [subscriptionSearchQuery, setSubscriptionSearchQuery] = useState("");
 
   useEffect(() => {
     // Check if admin is authenticated
@@ -92,15 +96,18 @@ export function AdminPage() {
   const loadData = async () => {
     try {
       setIsLoading(true);
-      const [employeesData, statsData, textSettingsData] = await Promise.all([
+      const [employeesData, statsData, textSettingsData, subscriptionsData] = await Promise.all([
         getAllEmployees(),
         getDepartmentStatistics(),
-        getTextSettings()
+        getTextSettings(),
+        getSubscriptions()
       ]);
       setEmployees(employeesData);
       setFilteredEmployees(employeesData);
       setDepartmentStats(statsData);
       setTextSettings(textSettingsData);
+      setSubscriptions(subscriptionsData);
+      setFilteredSubscriptions(subscriptionsData);
     } catch (error: any) {
       console.error("Failed to load admin data:", error);
       toast.error("데이터를 불러오는데 실패했습니다");
@@ -137,16 +144,33 @@ export function AdminPage() {
     setFilteredEmployees(filtered);
   }, [searchQuery, companyFilter, departmentFilter, employees]);
 
+  useEffect(() => {
+    // Filter subscriptions based on search query
+    if (!subscriptionSearchQuery.trim()) {
+      setFilteredSubscriptions(subscriptions);
+    } else {
+      const query = subscriptionSearchQuery.toLowerCase();
+      const filtered = subscriptions.filter(sub => 
+        sub.naverId?.toLowerCase().includes(query) ||
+        sub.naverName?.toLowerCase().includes(query) ||
+        sub.employeeName?.toLowerCase().includes(query) ||
+        sub.employeeCompany?.toLowerCase().includes(query) ||
+        sub.employeeDepartment?.toLowerCase().includes(query)
+      );
+      setFilteredSubscriptions(filtered);
+    }
+  }, [subscriptionSearchQuery, subscriptions]);
+
   // When company filter changes, reset department filter
   useEffect(() => {
     setDepartmentFilter("all");
   }, [companyFilter]);
 
   // Get unique companies and departments
-  const companies = Array.from(new Set(employees.map(emp => emp.company).filter(Boolean)));
+  const companies = Array.from(new Set(employees.map(emp => emp.company).filter((c): c is string => !!c)));
   const departments = companyFilter === "all" 
-    ? Array.from(new Set(employees.map(emp => emp.department).filter(Boolean)))
-    : Array.from(new Set(employees.filter(emp => emp.company === companyFilter).map(emp => emp.department).filter(Boolean)));
+    ? Array.from(new Set(employees.map(emp => emp.department).filter((d): d is string => !!d)))
+    : Array.from(new Set(employees.filter(emp => emp.company === companyFilter).map(emp => emp.department).filter((d): d is string => !!d)));
 
   // Top performers by department
   const topPerformersByDept = departmentStats.map(stat => ({
@@ -287,6 +311,10 @@ export function AdminPage() {
                 <TabsTrigger value="textSettings" className="data-[state=active]:bg-white">
                   <FileText className="w-4 h-4 mr-2" />
                   텍스트 설정
+                </TabsTrigger>
+                <TabsTrigger value="logs" className="data-[state=active]:bg-white">
+                  <List className="w-4 h-4 mr-2" />
+                  참여 로그
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -823,6 +851,120 @@ export function AdminPage() {
                 <p className="text-sm text-gray-500">
                   * 변경사항은 즉시 사이트에 반영됩니다
                 </p>
+              </div>
+            </TabsContent>
+
+            {/* Participation Log Tab */}
+            <TabsContent value="logs" className="p-6 space-y-4">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">참여 로그 (네이버 로그인)</h3>
+                  <p className="text-sm text-gray-500">네이버 로그인을 통해 참여한 전체 내역입니다.</p>
+                </div>
+                <div className="flex items-center gap-2 w-full md:w-auto">
+                  <div className="relative flex-1 md:w-80">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <Input
+                      placeholder="이름, 네이버 ID, 추천인으로 검색..."
+                      value={subscriptionSearchQuery}
+                      onChange={(e) => setSubscriptionSearchQuery(e.target.value)}
+                      className="pl-9 h-9"
+                    />
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      // CSV Export logic
+                      const headers = ["참여일시", "참여자 이름", "네이버 ID", "추천 직원", "회사", "부서"];
+                      const rows = filteredSubscriptions.map(sub => [
+                        new Date(sub.createdAt).toLocaleString('ko-KR'),
+                        sub.naverName || "미확인",
+                        sub.naverId,
+                        sub.employeeName || "-",
+                        sub.employeeCompany || "-",
+                        sub.employeeDepartment || "-"
+                      ]);
+                      
+                      let csvContent = "\uFEFF"; // UTF-8 BOM
+                      csvContent += headers.join(",") + "\n";
+                      rows.forEach(row => {
+                        csvContent += row.join(",") + "\n";
+                      });
+                      
+                      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                      const url = URL.createObjectURL(blob);
+                      const link = document.createElement("a");
+                      link.setAttribute("href", url);
+                      link.setAttribute("download", `participation_log_${new Date().toISOString().split('T')[0]}.csv`);
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                      toast.success("로그 데이터를 다운로드합니다");
+                    }}
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    다운로드
+                  </Button>
+                </div>
+              </div>
+
+              <div className="border border-gray-200 rounded-lg overflow-hidden">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-gray-50">
+                        <TableHead className="w-[180px]">참여일시</TableHead>
+                        <TableHead>참여자 이름 (네이버)</TableHead>
+                        <TableHead>네이버 ID</TableHead>
+                        <TableHead>추천 직원</TableHead>
+                        <TableHead>소속 (회사/부서)</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredSubscriptions.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={5} className="text-center py-12 text-gray-500">
+                            참여 내역이 없습니다.
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        filteredSubscriptions.map((sub) => (
+                          <TableRow key={sub.id} className="hover:bg-gray-50">
+                            <TableCell className="text-gray-500 text-sm">
+                              {new Date(sub.createdAt).toLocaleString('ko-KR', {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </TableCell>
+                            <TableCell className="font-medium">
+                              {sub.naverName || (
+                                <span className="text-gray-400 italic font-normal">이름 정보 없음</span>
+                              )}
+                            </TableCell>
+                            <TableCell className="text-gray-600 font-mono text-xs">
+                              {sub.naverId}
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex flex-col">
+                                <span className="font-medium text-gray-900">{sub.employeeName || "-"}</span>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex flex-col text-xs text-gray-500">
+                                <span>{sub.employeeCompany || "-"}</span>
+                                <span>{sub.employeeDepartment || "-"}</span>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
               </div>
             </TabsContent>
           </Tabs>
