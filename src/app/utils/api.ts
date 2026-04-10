@@ -174,13 +174,34 @@ export async function initEmployees(employees: Array<any>): Promise<{ success: b
 }
 
 export async function getAllEmployees(): Promise<Employee[]> {
-  const { data, error } = await supabase
-    .from('employees')
-    .select('*')
-    .order('name', { ascending: true });
+  const allData: any[] = [];
+  let from = 0;
+  let to = 999;
+  const CHUNK_SIZE = 1000;
 
-  if (error) return [];
-  return data.map(mapEmployee);
+  while (true) {
+    const { data, error } = await supabase
+      .from('employees')
+      .select('*')
+      .order('name', { ascending: true })
+      .range(from, to);
+
+    if (error) {
+      console.error("Error fetching employees chunk:", error);
+      break;
+    }
+    
+    if (!data || data.length === 0) break;
+    
+    allData.push(...data);
+    
+    if (data.length < CHUNK_SIZE) break;
+    
+    from += CHUNK_SIZE;
+    to += CHUNK_SIZE;
+  }
+
+  return allData.map(mapEmployee);
 }
 
 /**
@@ -212,24 +233,41 @@ export async function findEmployee(query: string): Promise<Employee | null> {
 }
 
 export async function getSubscriptions(): Promise<Subscription[]> {
-  const { data, error } = await supabase
-    .from('subscriptions')
-    .select(`
-      *,
-      employees (
-        name,
-        company,
-        department
-      )
-    `)
-    .order('created_at', { ascending: false });
+  const allData: any[] = [];
+  let from = 0;
+  let to = 999;
+  const CHUNK_SIZE = 1000;
 
-  if (error) {
-    console.error("Error fetching subscriptions:", error);
-    return [];
+  while (true) {
+    const { data, error } = await supabase
+      .from('subscriptions')
+      .select(`
+        *,
+        employees (
+          name,
+          company,
+          department
+        )
+      `)
+      .order('created_at', { ascending: false })
+      .range(from, to);
+
+    if (error) {
+      console.error("Error fetching subscriptions chunk:", error);
+      break;
+    }
+
+    if (!data || data.length === 0) break;
+
+    allData.push(...data);
+
+    if (data.length < CHUNK_SIZE) break;
+
+    from += CHUNK_SIZE;
+    to += CHUNK_SIZE;
   }
 
-  return data.map((row: any) => ({
+  return allData.map((row: any) => ({
     id: row.id,
     employeeId: row.employee_id,
     naverId: row.naver_id,
